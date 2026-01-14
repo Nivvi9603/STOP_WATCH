@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Blue Gradient Stopwatch</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+  margin:0;
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+  font-family:Arial;
+  color:white;
+}
+.box{
+  background:rgba(255,255,255,0.15);
+  padding:30px;
+  border-radius:20px;
+  width:320px;
+  text-align:center;
+}
+#time{
+  font-size:40px;
+  margin:20px 0;
+  background:linear-gradient(90deg,#4facfe,#00f2fe);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+button{
+  padding:10px 15px;
+  margin:5px;
+  border:none;
+  border-radius:20px;
+  background:linear-gradient(135deg,#4facfe,#00f2fe);
+  color:white;
+  font-weight:bold;
+  cursor:pointer;
+}
+button:hover{
+  background:linear-gradient(135deg,#00f2fe,#4facfe);
+}
+.laps{
+  margin-top:15px;
+  max-height:120px;
+  overflow:auto;
+  text-align:left;
+}
+</style>
+</head>
+
+<body>
+<div class="box">
+  <h2>Stopwatch</h2>
+  <div id="time">00:00</div>
+
+  <button onclick="start()">START</button>
+<button onclick="stop()">STOP</button>
+
+  <button onclick="lap()">LAP</button>
+  <button onclick="reset()">RESET</button>
+
+  <div class="laps" id="laps"></div>
+</div>
+
+<script>
+let seconds = 0;
+let timer = null;
+let lapCount = 0;
+
+function format(s){
+  let m = Math.floor(s/60);
+  let sec = s % 60;
+  return String(m).padStart(2,'0') + ":" + String(sec).padStart(2,'0');
+}
+
+function start(){
+  if(timer) return;
+  timer = setInterval(()=>{
+    seconds++;
+    document.getElementById("time").innerText = format(seconds);
+  },1000);
+}
+function stop(){
+	clearInterval(timer);
+	timer=null;
+}
+
+function reset(){
+  clearInterval(timer);
+  timer = null;
+  seconds = 0;
+  lapCount = 0;
+  document.getElementById("time").innerText = "00:00";
+  document.getElementById("laps").innerHTML = "";
+}
+
+function lap(){
+  if(!timer) return;
+  lapCount++;
+  document.getElementById("laps").innerHTML +=
+    "<div>Lap "+lapCount+": "+format(seconds)+"</div>";
+}
+</script>
+</body>
+</html>
